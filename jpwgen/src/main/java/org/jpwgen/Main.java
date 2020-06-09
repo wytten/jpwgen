@@ -7,6 +7,9 @@
 // You must not remove this notice, or any other, from this software.
 package org.jpwgen;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
@@ -20,7 +23,7 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.CommandLine;
 
 public class Main {
-    public static void main(String[] args) throws NoSuchAlgorithmException {
+    public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
         CommandLineParser parser = new PosixParser();
         HelpFormatter formatter = new HelpFormatter();
 
@@ -41,9 +44,13 @@ public class Main {
         options.addOption("L", "length", true,
                 "Length of the generated passwords");
 
+        options.addOption("f", "file", true,
+            "Input file, to be used as %s template for output");
+        
         try {
             CommandLine cmd = parser.parse(options, args);
 
+            boolean hasFile = cmd.hasOption('f');
             boolean hasLower = cmd.hasOption('l');
             boolean hasUpper = cmd.hasOption('u');
             boolean hasDigits = cmd.hasOption('d');
@@ -51,6 +58,12 @@ public class Main {
             boolean hasLength = cmd.hasOption('L');
             boolean hasNumber = cmd.hasOption('n');
 
+            if (hasFile) {
+              if (hasNumber) {
+                throw new IllegalArgumentException("Can't combine -f and -n options");
+              }
+            }
+            
             // Check for options
             if (hasLower || hasUpper || hasDigits || hasPunctuation) {
 
@@ -78,6 +91,7 @@ public class Main {
                     }
                 }
 
+                
                 // If number has been specified by the user, use it
                 // in place of the default value.
                 if (hasNumber) {
@@ -88,7 +102,21 @@ public class Main {
                         formatter.printHelp("pwgen", options);
                         System.exit(-1);
                     }
-                }
+                } else if (hasFile) {
+                  final String fileName = cmd.getOptionValue('f');
+                  final List<String> lines = Files.readAllLines(Paths.get(fileName));
+                  final List<String> passwords;
+
+                  passwords = generator.generateMultiple(passwordChars, lines.size(),
+                          length);
+
+                  int i=0;
+                  for (String password : passwords) {
+                      System.out.printf(lines.get(i)+"\n", password);
+                      i++;
+                  }
+                  System.exit(0);
+               }
 
                 final List<String> passwords;
 
