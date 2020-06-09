@@ -39,15 +39,20 @@ public class PasswordGenerator {
         String lookupTable="";
         
         if(characters.getAlphaLower()) {
-            lookupTable += LOWER;
+          lookupTable += LOWER;
+          lookupTable += LOWER;
+          lookupTable += LOWER;
         }
         
         if(characters.getAlphaUpper()) {
-            lookupTable += UPPER;
+          lookupTable += UPPER;
+          lookupTable += UPPER;
+          lookupTable += UPPER;
         }
         
         if(characters.getNumeric()) {
-            lookupTable += NUMERIC;
+          lookupTable += NUMERIC;
+          lookupTable += NUMERIC;
         }
         
         if(characters.getPunctuation()) {
