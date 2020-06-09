@@ -16,7 +16,7 @@ public class PasswordGenerator {
     private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String NUMERIC = "1234567890";
-    private static final String PUNCTUATION = "`~!@#$%^&*()_+[]{};:'\",<.>/?|\\";
+    private static final String PUNCTUATION = "`~!@#$%^&*()_+[]{};'\"<.>/?";
     
     private final Random random;
 
