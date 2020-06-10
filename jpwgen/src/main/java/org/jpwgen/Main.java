@@ -86,7 +86,7 @@ public class Main {
                         length = Integer.parseInt(cmd.getOptionValue('L'));
                     } catch(NumberFormatException e) {
                         System.err.println("Error: The argument to length must be a number");
-                        formatter.printHelp("pwgen", options);
+                        formatter.printHelp("jpwgen", options);
                         System.exit(-1);
                     }
                 }
@@ -99,7 +99,7 @@ public class Main {
                         number = Integer.parseInt(cmd.getOptionValue('n')); 
                     } catch(NumberFormatException e) {
                         System.err.println("Error: The argument to number must be a number");
-                        formatter.printHelp("pwgen", options);
+                        formatter.printHelp("jpwgen", options);
                         System.exit(-1);
                     }
                 } else if (hasFile) {
@@ -128,7 +128,7 @@ public class Main {
                 }
             } else {
                 // If none found, print the usage message.
-                formatter.printHelp("pwgen", options);
+                formatter.printHelp("jpwgen", options);
             }
         } catch (ParseException e) {
             System.err.println("Error parsing the commandline: "
