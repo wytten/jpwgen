@@ -105,27 +105,27 @@ public class Main {
                 } else if (hasFile) {
                   final String fileName = cmd.getOptionValue('f');
                   final List<String> lines = Files.readAllLines(Paths.get(fileName));
-                  final List<String> passwords;
-
-                  passwords = generator.generateMultiple(passwordChars, lines.size(),
+                  final List<String> passwords = generator.generateMultiple(passwordChars, lines.size(),
                           length);
 
                   int i=0;
-                  for (String password : passwords) {
-                      System.out.printf(lines.get(i)+"\n", password);
-                      i++;
+                  for (String line : lines) {
+                    if (line.contains("%s")) {
+                      String password = passwords.get(i++);
+                      System.out.printf(line+"\n", password);
+                    } else {
+                      System.out.println(line);
+                    }
                   }
                   System.exit(0);
                }
 
-                final List<String> passwords;
-
-                passwords = generator.generateMultiple(passwordChars, number,
-                        length);
-
+                final List<String> passwords = generator.generateMultiple(passwordChars, number,
+                                                                          length);
                 for (String password : passwords) {
                     System.out.println(password);
                 }
+
             } else {
                 // If none found, print the usage message.
                 formatter.printHelp("jpwgen", options);
